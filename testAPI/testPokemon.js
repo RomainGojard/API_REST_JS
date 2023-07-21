@@ -1,41 +1,38 @@
-const axios = require('axios');
+const axios = require("axios");
 
-const loginUrl = 'http://localhost:3000/auth/login';
+// URL de votre API pour créer un nouveau Pokémon
+const createPokemonUrl = "http://localhost:3000/pokemons"; // Remplacez par votre URL
 
-// Données d'authentification (email et mot de passe)
-const credentials = {
-  email: 'john.doe@example.com',
-  password: 'securePassword'
+// Données du nouveau Pokémon à créer
+const newPokemonData = {
+  name: "Pikachu",
+  createdBy: "64ba679439533405905a97ee",
+  baseStats: {
+    hp: 35,
+    attack: 55,
+    defense: 40,
+    specialAttack: 50,
+    specialDefense: 50,
+    speed: 90,
+  },
 };
 
-// Appel de la route login avec Axios
-axios.post(loginUrl, credentials)
-  .then(response => {
-    const token = response.data.token;
-    console.log('Token:', token);
+const token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY0YmE2Nzk0Mzk1MzM0MDU5MDVhOTdlZSIsImlhdCI6MTY4OTk0NzE1NSwiZXhwIjoxNjg5OTUwNzU1fQ.qnh3mrb-nV0d7JabuFReNxvcLBOUOQImZGm5CQSLkJU'; // Remplacez par le token JWT obtenu lors de la connexion
+const config = {
+    headers: {
+      Authorization: token,
+    },
+  };
 
-    // Remplacez l'URL par la route de récupération de tous les pokemon de votre API
-    const pokemonsURL = 'http://localhost:3000/pokemons';
-
-    // Appel de la route pour récupérer tous les utilisateurs avec Axios
-    axios.get(pokemonsURL, {
-        headers: {
-          Authorization: token
-        }
-      })
-      .then(response => {
-        console.log('Tous les pokemons:', response.data);
-      })
-      .catch(error => {
-        console.error('Erreur lors de la récupération des pokemons:', error.response.data);
-      });
-
-        // get pokemon by name
-        const pokemonUrl = 'http://localhost:3000/pokemons/charmander';
-        
+// Appel de la route pour créer un nouveau Pokémon avec Axios
+axios
+  .post(createPokemonUrl, newPokemonData, config)
+  .then((response) => {
+    console.log("Nouveau Pokémon créé :", response.data);
   })
-  .catch(error => {
-    console.error('Erreur lors de la connexion:', error.response.data);
+  .catch((error) => {
+    console.error(
+      "Erreur lors de la création du Pokémon :",
+      error.response.data
+    );
   });
-
-

@@ -1,8 +1,7 @@
-const express = require('express');
+const express = require("express");
 const router = express.Router();
-const pokemonController = require('../controllers/pokemonController');
-const auth = require('../middlewares/auth');
-
+const pokemonController = require("../controllers/pokemonController");
+const auth = require("../middlewares/auth");
 
 /**
  * @swagger
@@ -13,7 +12,7 @@ const auth = require('../middlewares/auth');
  *        '200':
  *           description: A successful response
  */
-router.get('/', auth, pokemonController.getAllPokemons);
+router.get("/", auth, pokemonController.getAllPokemons);
 
 /**
  * @swagger
@@ -24,12 +23,23 @@ router.get('/', auth, pokemonController.getAllPokemons);
  *        '200':
  *           description: A successful response
  */
-router.get('/:name', auth, pokemonController.getPokemon);
+router.get("/:name", auth, pokemonController.getPokemon);
+
+/**
+ * @swagger
+ * /api/pokemons:
+ *  post:
+ *   description: add pokemon
+ *  responses:
+ *   '200':
+ *   description: A successful response
+ */
+router.post("/", auth, pokemonController.addPokemon);
 
 // Error handling middleware
 router.use((err, req, res, next) => {
-    console.error(err.stack);
-    res.status(500).send('Something broke!');
-  });
+  console.error(err.stack);
+  res.status(500).send("Something broke!");
+});
 
 module.exports = router;
