@@ -16,17 +16,6 @@ router.get("/", auth, pokemonController.getAllPokemons);
 
 /**
  * @swagger
- * /api/pokemons/{name}:
- *   get:
- *     description: Get a pokemon by name
- *     responses:
- *        '200':
- *           description: A successful response
- */
-router.get("/:name", auth, pokemonController.getPokemon);
-
-/**
- * @swagger
  * /api/pokemons:
  *  post:
  *   description: add pokemon
@@ -35,6 +24,32 @@ router.get("/:name", auth, pokemonController.getPokemon);
  *   description: A successful response
  */
 router.post("/", auth, pokemonController.addPokemon);
+
+
+/**
+ * @swagger
+ * /api/pokemons/{name}:
+ * get:
+ *     description: Get a pokemon by name
+ *     responses:
+ *        '200':
+ *           description: A successful response
+ *
+ * put:
+ *     description: update a pokemon
+ *     responses:
+ *         '200':
+ *              description: A successful response
+ * 
+ * delete:
+ *     description: delete a pokemon
+ *     responses:
+ *         '200':
+ *              description: A successful response
+ */
+router.get("/:name", auth, pokemonController.getPokemon);
+router.put("/:name", auth, pokemonController.updatePokemon);
+router.delete("/:name", auth, pokemonController.deletePokemon);
 
 // Error handling middleware
 router.use((err, req, res, next) => {
