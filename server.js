@@ -5,6 +5,7 @@ const PORT = process.env.PORT || 3000;
 const mongoose = require('mongoose')
 const userRoutes = require('./routes/userRoutes');
 const authRoutes = require('./routes/authRoutes');
+const pokemonRoutes = require('./routes/pokemonRoutes');
 const swaggerJsDoc = require('swagger-jsdoc');
 const swaggerUi = require('swagger-ui-express');
 
@@ -20,7 +21,11 @@ const swaggerOptions = {
  };
 
 //connect to mongodb
-mongoose.connect('mongodb://localhost:27017/API_REST', { useNewUrlParser: true, useUnifiedTopology: true })
+mongoose.connect( process.env.mongodbConnection , { 
+  useNewUrlParser: true, 
+  useUnifiedTopology: true, 
+  authSource: 'admin' 
+})
 .then(() => console.log('MongoDB Connected...'))
 .catch(err => console.log(err));
  
@@ -38,7 +43,9 @@ app.get('/', (req, res) => {
    res.send('Hello World!');
 });
 
-app.use('/user', userRoutes);
+app.use('/users', userRoutes);
+
+app.use('/pokemons', pokemonRoutes);
 
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocs));
 

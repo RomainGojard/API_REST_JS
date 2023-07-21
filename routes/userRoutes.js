@@ -2,19 +2,6 @@ const express = require('express');
 const router = express.Router();
 const userController = require('../controllers/userController');
 const auth = require('../middlewares/auth');
-const authController = require('../controllers/authController')
-
-
-/**
- * @swagger
- * /api/users:
- *   post:
- *     description: login route
- *     responses:
- *        '200':
- *           description: A successful response
- */
-router.post('/login', authController.login);
 
 
 
@@ -28,7 +15,18 @@ router.post('/login', authController.login);
  *        '200':
  *           description: A successful response
  */
-router.get('/users', auth, userController.getAllUsers);
+router.get('/', auth, userController.getAllUsers);
+
+/**
+ * @swagger
+ * /api/users/{id}:
+ *   get:
+ *     description: Get a user by id
+ *     responses:
+ *        '200':
+ *           description: A successful response
+ */
+router.get('/:id', auth, userController.getUser);
 
 // Error handling middleware
 router.use((err, req, res, next) => {

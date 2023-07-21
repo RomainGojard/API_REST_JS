@@ -31,27 +31,21 @@ exports.signup = (req, res) => {
       if (existingUser) {
         return res.status(409).json({ error: 'Email already taken' });
       }
-
-      bcrypt.hash(password, 10, (err, hashedPassword) => {
-        if (err) {
-          return res.status(500).json({ error: 'Error hashing password' });
-        }
-
         const newUser = new User({
           name,
           email,
-          password: hashedPassword
+          password: password
         });
 
         newUser.save()
-          .then(savedUser => {
-            const token = jwt.sign({ id: savedUser._id }, process.env.JWT_SECRET, { expiresIn: '1h' });
-            res.json({ token });
-          })
-          .catch(saveErr => {
-            res.status(500).json({ error: 'Error saving user to the database' });
-          });
-      });
+        .then(savedUser => {
+        const token = jwt.sign({ id: savedUser._id }, process.env.JWT_SECRET, { expiresIn: '1h' });
+        res.json({ token });
+        })
+        .catch(saveErr => {
+        console.error('Error saving user:', saveErr); // Ajout du gestionnaire d'erreur personnalisé
+        res.status(500).json({ error: 'Error saving user to the database' });
+        });
     })
     .catch(err => res.status(500).json({ error: err }));
 };
