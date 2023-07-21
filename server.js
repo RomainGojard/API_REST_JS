@@ -4,6 +4,7 @@ const app = express();
 const PORT = process.env.PORT || 3000;
 const mongoose = require('mongoose')
 const userRoutes = require('./routes/userRoutes');
+const authRoutes = require('./routes/authRoutes');
 const swaggerJsDoc = require('swagger-jsdoc');
 const swaggerUi = require('swagger-ui-express');
 
@@ -19,14 +20,14 @@ const swaggerOptions = {
  };
 
 //connect to mongodb
-mongoose.connect('mongodb://localhost:27017', { useNewUrlParser: true, useUnifiedTopology: true })
+mongoose.connect('mongodb://localhost:27017/API_REST', { useNewUrlParser: true, useUnifiedTopology: true })
 .then(() => console.log('MongoDB Connected...'))
 .catch(err => console.log(err));
  
  const swaggerDocs = swaggerJsDoc(swaggerOptions);
 
 
-//middleware to parse json and urlencoded request body
+// Middleware for parsing request body
  app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
@@ -41,7 +42,9 @@ app.use('/user', userRoutes);
 
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocs));
 
-// middleware to handle errors
+app.use('/auth', authRoutes);
+
+// Error handling middleware
 app.use((err, req, res, next) => {
     console.error(err.stack);
     res.status(500).send('Oups ! We got a problem.');
