@@ -47,6 +47,8 @@ app.use('/users', userRoutes);
 
 app.use('/pokemons', pokemonRoutes);
 
+app.use('/trainers', trainerRoutes);
+
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocs));
 
 app.use('/auth', authRoutes);
