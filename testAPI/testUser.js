@@ -1,92 +1,54 @@
 const axios = require('axios');
 
-const loginUrl = 'http://localhost:3000/auth/login';
-
-// Données d'authentification (email et mot de passe)
+const baseUrl = 'http://localhost:3000';
 const credentials = {
   email: 'john.doe@example.com',
   password: 'securePassword'
 };
 
-// Appel de la route login avec Axios
-axios.post(loginUrl, credentials)
-  .then(response => {
-    const token = response.data.token;
-    console.log('Token:', token);
+let token;
 
-    // Remplacez l'URL par la route de récupération de tous les utilisateurs de votre API
-    const usersUrl = 'http://localhost:3000/users';
+function login() {
+  return axios
+    .post(`${baseUrl}/auth/login`, credentials)
+    .then((response) => {
+      console.log('User login successfully:', response.data);
+      token = response.data.token;
+    });
+}
 
-    // Appel de la route pour récupérer tous les utilisateurs avec Axios
-    axios.get(usersUrl, {
-        headers: {
-          Authorization: token
-        }
-      })
-      .then(response => {
-        console.log('Tous les utilisateurs:', response.data);
-      })
-      .catch(error => {
-        console.error('Erreur lors de la récupération des utilisateurs:', error.response.data);
-      });
-
-      // get user by id
-        const userUrl = 'http://localhost:3000/users/64ba679439533405905a97ee';
-        //axios request
-        axios.get(userUrl, {
-            headers: {
-                Authorization: token
-            }
-        })
-        //response
-        .then(response => {
-            console.log('Utilisateur:', response.data);
-        }
-        )
-        .catch(error => {
-            console.error('Erreur lors de la récupération de l\'utilisateur:', error.response.data);
-        }
-        );
-  })
-  .catch(error => {
-    console.error('Erreur lors de la connexion:', error.response.data);
-  });
-
-
-
-
-/*
-const userData = {
-  name: 'John Doe',
-  email: 'john.doe@example.com',
-  password: 'securePassword'
-};
-
-axios.post('http://localhost:3000/auth/signup', userData)
-  .then(response => {
-    console.log('User created successfully:', response.data);
-  })
-  .catch(error => {
-    console.error('Error creating user:', error.response.data);
-    console.error('Status code:', error.response.status);
-    console.error('Status text:', error.response.statusText);
-  });
-*/
-
-/*
-const userData = {
-    email: 'john.doe@example.com',
-    password: 'securePassword'
+function getAllUsers() {
+  const config = {
+    headers: {
+      Authorization: token,
+    },
   };
 
-  axios.post('http://localhost:3000/auth/login', userData)
-  .then(response => {
-    console.log('User login successfully:', response.data);
-  })
-  .catch(error => {
-    console.error('Error login user:', error.response.data);
+  return axios
+    .get(`${baseUrl}/users`, config)
+    .then((response) => {
+      console.log('All users:', response.data);
+    });
+}
+
+function getUserById() {
+  const config = {
+    headers: {
+      Authorization: token,
+    },
+  };
+
+  return axios
+    .get(`${baseUrl}/users/64ba679439533405905a97ee`, config)
+    .then((response) => {
+      console.log('User:', response.data);
+    });
+}
+
+// Run the tests
+login()
+  .then(getAllUsers)
+  .then(getUserById)
+  .catch((error) => {
+    console.error('Error:', error.response ? error.response.data : error.message);
   });
-*/
-
-
-

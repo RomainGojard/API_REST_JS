@@ -12,7 +12,7 @@ const auth = require("../middlewares/auth");
  *        '200':
  *           description: A successful response
  */
-router.get("/", auth, trainerController.getAll);
+router.get("/", auth, trainerController.getAllTrainers);
 
 /**
  * @swagger
