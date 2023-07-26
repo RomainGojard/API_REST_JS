@@ -2,7 +2,7 @@ const axios = require('axios');
 
 const baseUrl = 'http://localhost:3000';
 const credentials = {
-  email: 'chico@gmail.com',
+  email: 'chico1@gmail.com',
   password: 'securePassword'
 };
 

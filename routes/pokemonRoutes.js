@@ -11,6 +11,33 @@ const auth = require("../middlewares/auth");
  *     responses:
  *        '200':
  *           description: A successful response
+ *           schema:
+ *             type: array
+ *             items:
+ *               $ref: '#/definitions/Pokemon'
+ * definitions:
+ *   Pokemon:
+ *     properties:
+ *       name:
+ *         type: string
+ *       createdBy:
+ *         type: string
+ *       baseStats:
+ *         $ref: '#/definitions/BaseStats'
+ *   BaseStats:
+ *     properties:
+ *       hp:
+ *         type: integer
+ *       attack:
+ *         type: integer
+ *       defense:
+ *         type: integer
+ *       specialAttack:
+ *         type: integer
+ *       specialDefense:
+ *         type: integer
+ *       speed:
+ *         type: integer
  */
 router.get("/", auth, pokemonController.getAllPokemons);
 
@@ -19,30 +46,61 @@ router.get("/", auth, pokemonController.getAllPokemons);
  * /api/pokemons:
  *  post:
  *   description: add pokemon
- *  responses:
- *   '200':
- *   description: A successful response
+ *   parameters:
+ *     - in: body
+ *       name: pokemon
+ *       description: The pokemon to create.
+ *       schema:
+ *         $ref: '#/definitions/Pokemon'
+ *   responses:
+ *     '200':
+ *       description: A successful response
+ *       schema:
+ *         $ref: '#/definitions/Pokemon'
  */
 router.post("/", auth, pokemonController.addPokemon);
-
 
 /**
  * @swagger
  * /api/pokemons/{name}:
- * get:
+ *   get:
  *     description: Get a pokemon by name
+ *     parameters:
+ *       - in: path
+ *         name: name
+ *         required: true
+ *         type: string
  *     responses:
  *        '200':
  *           description: A successful response
+ *           schema:
+ *             $ref: '#/definitions/Pokemon'
  *
- * put:
+ *   put:
  *     description: update a pokemon
+ *     parameters:
+ *       - in: path
+ *         name: name
+ *         required: true
+ *         type: string
+ *       - in: body
+ *         name: pokemon
+ *         description: The pokemon to update.
+ *         schema:
+ *           $ref: '#/definitions/Pokemon'
  *     responses:
  *         '200':
  *              description: A successful response
+ *              schema:
+ *                $ref: '#/definitions/Pokemon'
  * 
- * delete:
+ *   delete:
  *     description: delete a pokemon
+ *     parameters:
+ *       - in: path
+ *         name: name
+ *         required: true
+ *         type: string
  *     responses:
  *         '200':
  *              description: A successful response

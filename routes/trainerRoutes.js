@@ -18,13 +18,29 @@ router.get("/", auth, trainerController.getAllTrainers);
  * @swagger
  * /api/trainers:
  *  post:
- *   description: add trainer
- *  responses:
- *   '200':
- *   description: A successful response
+ *   description: Add trainer
+ *   parameters:
+ *    - in: body
+ *      name: trainer
+ *      description: The trainer to create.
+ *      schema:
+ *       type: object
+ *       required:
+ *        - name
+ *       properties:
+ *        name:
+ *         type: string
+ *        profession:
+ *         type: string
+ *        pokemons:
+ *         type: array
+ *         items:
+ *          type: string
+ *   responses:
+ *    '200':
+ *     description: A successful response
  */
 router.post("/", auth, trainerController.addTrainer);
-
 
 /**
  * @swagger
@@ -36,13 +52,33 @@ router.post("/", auth, trainerController.addTrainer);
  *           description: A successful response
  *
  * put:
- *     description: update a trainer
+ *     description: Update a trainer
+ *     parameters:
+ *      - in: path
+ *        name: name
+ *        required: true
+ *        type: string
+ *        description: The name of the trainer to update.
+ *      - in: body
+ *        name: trainer
+ *        description: The trainer data to update.
+ *        schema:
+ *         type: object
+ *         properties:
+ *          newName:
+ *           type: string
+ *          profession:
+ *           type: string
+ *          pokemons:
+ *           type: array
+ *           items:
+ *            type: string
  *     responses:
  *         '200':
  *              description: A successful response
  * 
  * delete:
- *     description: delete a trainer
+ *     description: Delete a trainer
  *     responses:
  *         '200':
  *              description: A successful response
